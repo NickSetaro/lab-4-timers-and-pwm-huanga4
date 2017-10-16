@@ -1,7 +1,7 @@
 #Hardware PWM
 ##Author: Austin Huang   Co Op: Matthew Rodriguez, Seamus Plunkett
 ##Summary 
-The program will cause an LED to change brightness increasing by 10% duty cycles by using a hardware approach.
+The program will cause an LED to change brightness increasing by 10% duty cycles by using a hardware approach originally..
 
 ##Notes
 This program can be run on different MSP430 boards that use different pins, so the specific pin numbers will be replaced with the variable "X" (i.e. PXOUT ^= BITX;)
