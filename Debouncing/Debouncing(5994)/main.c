@@ -3,7 +3,7 @@
 
 /**
  * main.c
- * Austing Huang
+ * Austin Huang
  * Debouncing 5994
  */
 int main(void) {
