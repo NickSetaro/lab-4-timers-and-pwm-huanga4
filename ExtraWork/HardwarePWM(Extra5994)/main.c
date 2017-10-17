@@ -4,7 +4,7 @@
 /**
  * main.c
  * Austin Huang
- * HardwarePWM(Log based for linear appearance on eyes)
+ * HardwarePWM(Log based for linear appearance on eyes) Extra work
  */
 #include <msp430.h>
 #include <Math.h>
@@ -42,15 +42,15 @@ int main(void) {
                 reps--;
                 double logNum  = log10(reps) * 100.0;  //Equation to create increments at correct rate for log scale.
                 int incrementNum = (100 - logNum);     //Difference between this and normal HardwarePWM
-                TA0CCR0 = 0;
-                TA0CCR1 = incrementNum;
-                TA0CCR0 = 100;
+                TA0CCR0 = 0; //reset CCR0
+                TA0CCR1 = incrementNum;  //assign CCR1 value
+                TA0CCR0 = 100; //assign CCR0 value
             }
             else if (reps == 0){
-                TA0CCR0 = 0;
-                TA0CCR1 = 0;
-                TA0CCR0 = 100;
-                reps = 10;
+                TA0CCR0 = 0; //reset CCR0
+                TA0CCR1 = 0; //reset CCR1
+                TA0CCR0 = 100; //assign CCR0 value
+                reps = 10; //set reps
             }
         }
         if((P5IN & BIT6))
