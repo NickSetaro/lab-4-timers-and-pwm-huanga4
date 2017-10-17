@@ -13,32 +13,30 @@ volatile unsigned int j;
 int reps = 10;
 
 int main(void) {
-    WDTCTL = WDTPW | WDTHOLD;               // Stop watchdog timer
+    WDTCTL = WDTPW | WDTHOLD;               // Stop watchdog
     PM5CTL0 &= ~LOCKLPM5;                   // Disable the GPIO power-on default high-impedance mode
-                                            // to activate previously configured port settings
-    P1DIR |= BIT0;                          // Set P1.0 to output direction
-    P1OUT &= ~BIT0;                         // Switch LED off
+    P1DIR |= BIT0;                          // set P1.0
+    P1OUT &= ~BIT0;                         // clear P1.0
 
 
-    P1DIR |=BIT1; //set Port 9.4 output ---LED
-    P1OUT &= ~BIT1; //Clear P9.4
+    P1DIR |=BIT1; //set P1.1 LED
+    P1OUT &= ~BIT1; //clear 1.1
 
-    P5DIR  &= ~BIT6;                        // Set P1.1 as input
-    P5OUT |= BIT6;                          // Configure P1.1 for Pull-Up
-    P5REN |= BIT6;                          // Enable Pull Up of P1.1
+    P5DIR  &= ~BIT6;                        // set P5.6
+    P5OUT |= BIT6;                          // configure pull-up
+    P5REN |= BIT6;                          // enable pull-up
 
-    TA0CCTL1 = OUTMOD_7;                    // Reset/Set Mode
-    TA0CTL = TASSEL_2 + MC_1 +TACLR ;       // SMCLK / Up mode
-    TA0CCR0 = 100-1;                        // PWM Frequency 10 kHz
+    TA0CCTL1 = OUTMOD_7;                    // reset/set
+    TA0CTL = TASSEL_2 + MC_1 +TACLR ;       // TimerA0 set up, Up mode, SMCLK
+    TA0CCR0 = 100-1;                        
     TA0CCR1 = 50;                           // 50% Duty Cycle
-    P1SEL0 |= BIT0;                         // PWM output to LED P1.0
+    P1SEL0 |= BIT0;                         // PWM outputs P1.0
     P1SEL1 &= ~BIT0;
 
     while(1)
     {
-        if(!(P5IN & BIT6))
-        {
-            P1OUT |= BIT1; //Sets bit
+        if(!(P5IN & BIT6)){
+            P1OUT |= BIT1; //set P1.1
             if(reps > 0)
             {
                 reps--;
@@ -56,7 +54,7 @@ int main(void) {
             }
         }
         if((P5IN & BIT6))
-            P1OUT &= ~BIT1; //Clear P9.4
+            P1OUT &= ~BIT1; //clear 1.1
         for(j=100;j>0;j--)
         {
         __delay_cycles(1000);
