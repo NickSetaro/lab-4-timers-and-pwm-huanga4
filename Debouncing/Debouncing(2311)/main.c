@@ -34,7 +34,7 @@ __interrupt void PORT_1(void)
     //Debounce 2
     TB0CTL = TBSSEL_1 + MC_1 + ID_1; //Set up Timer B, Count up, divider value 2
     TB0CCTL0 = 0x10; // set up compare mode
-    TB0CCR0 = 1000; // interrupt is disable; duration disabled = 1000/16kHz = 1/16 sec
+    TB0CCR0 = 1000; // interrupt is disabled; duration disabled = 1000/16kHz = 1/16 sec
 
     P1IFG &=~(BIT1); // Clear flag
 }
