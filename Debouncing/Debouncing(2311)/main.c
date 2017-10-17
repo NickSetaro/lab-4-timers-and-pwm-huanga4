@@ -41,5 +41,5 @@ __interrupt void PORT_1(void)
 #pragma vector=TIMER0_B0_VECTOR
 __interrupt void Timer_B0(void)
 {
-    P1IE |= BIT1; //Enable interrupt again.
+    P1IE |= BIT1; //re-enable interrupt
 }
