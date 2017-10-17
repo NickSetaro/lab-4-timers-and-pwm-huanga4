@@ -27,7 +27,7 @@ void main(void) {
 __interrupt void PORT_1(void)
 {
     P1OUT ^=0x01; //Toggle
-    P1IE &= ~BIT3; //disable interrupt
+    P1IE &= ~BIT3; //disabled interrupt
     
     //Debounce 1
     __delay_cycles(1);
