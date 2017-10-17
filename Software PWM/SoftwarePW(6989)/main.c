@@ -6,7 +6,6 @@
  */
 
 volatile unsigned int j;
-int taps = 10;
 
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;               // Stop watchdog 
