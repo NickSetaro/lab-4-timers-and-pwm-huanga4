@@ -68,14 +68,14 @@ __interrupt void PORT1_IRS(void)
 
     P2OUT |= BIT0; //sets P2.0
     if(TB0CCR1 < 1000){
-        TB0CCR0 = 0;
-        TB0CCR1 += 100;
-        TB0CCR0 = 1000;
+        TB0CCR0 = 0; //reset CCR0
+        TB0CCR1 += 100; //assign and increment CCR1 value
+        TB0CCR0 = 1000; //assign CCR0 value
     }
     else if (TB0CCR1 >= 1000){
-        TB0CCR0 = 0;
-        TB0CCR1 = 0;
-        TB0CCR0 = 1000;
+        TB0CCR0 = 0;  //reset CCR0
+        TB0CCR1 = 0;  //reset CCR1
+        TB0CCR0 = 1000;  //assign CCR0 value
     }
     P1IFG &= ~BIT1;
 }
