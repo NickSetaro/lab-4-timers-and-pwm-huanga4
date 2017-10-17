@@ -34,9 +34,9 @@ int main(void) {
     __bis_SR_register(GIE);
     while(1)
     {
-        if((P1IN & BIT3))
+        if((P1IN & BIT3)){
             P1OUT &= ~BIT6; //clear P1.6
-
+        }
     }
 }
 
@@ -47,8 +47,7 @@ __interrupt void PORT1_IRS(void)
     __delay_cycles(1000); //Debounce
     P1IE |= BIT3; //interrupt enable on
     P1OUT |= BIT6; //sets P1.6
-    if(TA0CCR1 >= 1000) // Check if brightness is max
-    {
+    if(TA0CCR1 >= 1000){ // Check if brightness is max
         TA0CCR0 = 0; // reset CCR0
         TA0CCR1 = 0;// reset CCR1
         TA0CCR0 = 1000; //assign CCR0 value
@@ -66,8 +65,7 @@ __interrupt void PORT1_IRS(void)
 #pragma vector=TIMER0_A1_VECTOR
 __interrupt void Timer0_A1_ISR (void)
 {
-    if(TA0CCR1 != 1000)
-    {
+    if(TA0CCR1 != 1000){
        P1OUT &= ~(BIT0); //LED off
     }
     TA0CCTL1 &= ~BIT0; //clear flag
