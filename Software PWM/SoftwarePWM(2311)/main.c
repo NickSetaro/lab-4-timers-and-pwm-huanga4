@@ -1,65 +1,62 @@
-//******************************************************************************
-//   Software PWM 2311
-//   Austin Huang
-//   Built with CCSv4 and IAR Embedded Workbench Version: 4.21
-//******************************************************************************
-#include <msp430.h>
+#include <msp430.h> 
 #include <Math.h>
+/**
+ * main.c
+ * Austin Huang
+ */
 
 volatile unsigned int j;
 int taps = 10;
 
 int main(void) {
-    WDTCTL = WDTPW | WDTHOLD;               // Stop watchdog timer
-    PM5CTL0 &= ~LOCKLPM5;                   // to activate previously configured port settings
-    P1DIR |= BIT0;                          // Set P1.0 to output direction
-    P1OUT &= ~BIT0;                         // Switch LED off
+    WDTCTL = WDTPW | WDTHOLD;               // Stop watchdog 
+    PM5CTL0 &= ~LOCKLPM5;                   // Disable the GPIO power-on default high-impedance mode
+    P1DIR |= BIT0;                          // set P1.0 
+    P1OUT &= ~BIT0;                         // clear P1.0
 
 
-    P2DIR |=BIT0; //set Port 9.4 output ---LED
-    P2OUT &= ~BIT0; //Clear P9.4
+    P2DIR |=BIT0; //set port
+    P2OUT &= ~BIT0; //clear
 
-    P1DIR  &= ~BIT1;                        // Set P1.1 as input
-    P1OUT |= BIT1;                          // Configure P1.1 for Pull-Up
-    P1REN |= BIT1;                          // Enable Pull Up of P1.1
-    P1IE |= BIT1; //enable the interrupt on Port 1.1
-    P1IES &= ~BIT1; //set as falling edge
-    P1IFG &= ~(BIT1); //clear interrupt flag
+    P1DIR  &= ~BIT1;                        // set P1.1 
+    P1OUT |= BIT1;                          // configure pull-up
+    P1REN |= BIT1;                          // enable pull-up
+    P1IE |= BIT1; //enable interrupt 
+    P1IES &= ~BIT1; //set falling edge
+    P1IFG &= ~(BIT1); //clear flag
 
 
-    TB0CTL = TBSSEL_2 + MC_1 ;       // SMCLK / Upmode
+    TB0CTL = TBSSEL_2 + MC_1 ;       //TimerB0 set up, Up mode, SMCLK 
     TB0CCTL1 = (CCIE);
     TB0CCTL0 = (CCIE);
-    TB0CCR0 = 1000-1;                        // PWM Frequency 1 kHz
+    TB0CCR0 = 1000-1;                        
     TB0CCR1 = 500;                           // 50% Duty Cycle
 
     __bis_SR_register(GIE);
     while(1)
     {
-        if((P1IN & BIT1))
-            P2OUT &= ~BIT0; //Clear P9.4
-
+        if((P1IN & BIT1)){
+            P2OUT &= ~BIT0; //clear P2.0
+        }
     }
 }
 
-//Timer A interrupt vectors
 #pragma vector=TIMER0_B1_VECTOR
 __interrupt void Timer0_B1_ISR (void)
 {
-    if(TB0CCR1 != 1000)
-    {
-       P1OUT &= ~(BIT0); //turns off red led
+    if(TB0CCR1 != 1000){
+       P1OUT &= ~(BIT0); //LED off
     }
-    TB0CCTL1 &= ~BIT0; //clears flag
+    TB0CCTL1 &= ~BIT0; //clear flag
 }
 
 #pragma vector=TIMER0_B0_VECTOR
 __interrupt void Timer0_B0_ISR (void)
 {
     if(TB0CCR1 != 0){
-        P1OUT |= (BIT0); //turns on red led
+        P1OUT |= (BIT0); //LED off
     }
-    TB0CCTL0 &= ~BIT0;  //clears flag
+    TB0CCTL0 &= ~BIT0;  //clear flag
 }
 
 #pragma vector=PORT1_VECTOR
@@ -69,9 +66,8 @@ __interrupt void PORT1_IRS(void)
     __delay_cycles(1000);
     P1IE |= BIT1;
 
-    P2OUT |= BIT0; //Sets P9.4
-    if(TB0CCR1 < 1000)
-    {
+    P2OUT |= BIT0; //sets P2.0
+    if(TB0CCR1 < 1000){
         TB0CCR0 = 0;
         TB0CCR1 += 100;
         TB0CCR0 = 1000;
