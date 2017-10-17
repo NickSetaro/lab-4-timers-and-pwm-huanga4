@@ -68,14 +68,14 @@ __interrupt void PORT5_IRS(void)
 
     P1OUT |= BIT1; //sets P1.1
     if(TA0CCR1 < 1000){
-        TA0CCR0 = 0;
-        TA0CCR1 += 100;
-        TA0CCR0 = 1000;
+        TA0CCR0 = 0;  //reset CCR0
+        TA0CCR1 += 100;  //assign and increment CCR0 value
+        TA0CCR0 = 1000; //assign CCR0 value
     }
     else if (TA0CCR1 >= 1000){
-        TA0CCR0 = 0;
-        TA0CCR1 = 0;
-        TA0CCR0 = 1000;
+        TA0CCR0 = 0;  //reset CCR0
+        TA0CCR1 = 0;  //reset CCR1
+        TA0CCR0 = 1000; //assign CCR0 value
     }
     P5IFG &= ~BIT6;
 }
