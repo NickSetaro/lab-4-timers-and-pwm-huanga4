@@ -56,8 +56,6 @@ __interrupt void PORT1_IRS(void)
         TA0CCR0 = 0; // reset CCR0
         TA0CCR1 += 100; // add 10%
         TA0CCR0 = 1000;//  set CCR0 back to 10 kHz
-
-
     }
     P1IFG &= ~BIT3; //clear flag
 }
