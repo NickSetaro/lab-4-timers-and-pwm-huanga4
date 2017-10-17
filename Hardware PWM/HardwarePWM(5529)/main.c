@@ -11,41 +11,40 @@ volatile unsigned int f;
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;               // Stop watchdog timer
 
-    P1DIR |= BIT0;                          // Set P1.0 to output direction
-    P1OUT &= ~BIT0;                         // Switch LED off
+    P1DIR |= BIT0;                          // set P1.0  LED
+    P1OUT &= ~BIT0;                         // clear P1.0
 
 
-    P4DIR |=BIT7;                           //set Port 9.4 output ---LED
-    P4OUT &= ~BIT7;                         //Clear P9.4
+    P4DIR |=BIT7;                           //set Port 4.7 LED
+    P4OUT &= ~BIT7;                         //clear P4.7
 
-    P2DIR  &= ~BIT1;                        // Set P1.1 as input
-    P2OUT |= BIT1;                          // Configure P1.1 for Pull-Up
-    P2REN |= BIT1;                          // Enable Pull Up of P1.1
+    P2DIR  &= ~BIT1;                        // Set input
+    P2OUT |= BIT1;                          // configure pull-up
+    P2REN |= BIT1;                          // enable pull-up
 
-    TA0CCTL1 = OUTMOD_7;                    // Reset/Set Mode
-    TA0CTL = TASSEL_2 + MC_1 + TACLR ;       // SMCLK / Upmode
-    TA0CCR0 = 100-1;                        // PWM Frequency 10 kHz
+    TA0CCTL1 = OUTMOD_7;                    // reset/set
+    TA0CTL = TASSEL_2 + MC_1 + TACLR ;       // TimerA set up, Up mode, SMCLK
+    TA0CCR0 = 100-1;                        //
     TA0CCR1 = 50;                           // 50% Duty Cycle
 
     while(1)
     {
-        if(!(P1IN & BIT1)) //If the button is pressed
-        {
-            P4OUT |= BIT7; //Sets P4.7
-            if(TA0CCR1 <= 90) // If the brightness is <= than 90%
-            {
-                TA0CCR0 = 0; // Reset CCR0
-                TA0CCR1 += 10; // Add 10%
-                TA0CCR0 = 100; // Set CCR0 back to 10 kHz
+        if(!(P1IN & BIT1)){ //button pressed
+            P4OUT |= BIT7; //sets P4.7
+            if(TA0CCR1 <= 90){ // Check brightness below 90%
+                TA0CCR0 = 0; // reset CCR0
+                TA0CCR1 += 10; // add 10%
+                TA0CCR0 = 100; // assign CCR0 value 
             }
-            else if (TA0CCR1 == 100){ // If the brightness is at 100%
-                TA0CCR0 = 0; // Reset CCR0
-                TA0CCR1 = 0; // Reset CCR1
-                TA0CCR0 = 100; //  Set CCR0 back to 10 kHz
+            else if (TA0CCR1 == 100){ // Check if brightness is max
+                TA0CCR0 = 0; // reset CCR0
+                TA0CCR1 = 0; // reset CCR1
+                TA0CCR0 = 100; //assign CCR0 value
             }
         }
-        if((P1IN & BIT1))
-            P4OUT &= ~BIT7; //Clear P4.7
+        if((P1IN & BIT1)){
+            P4OUT &= ~BIT7; //Clear P4.7 
+        }
         // Debounce
         for(j=100;j>0;j--)
         {
