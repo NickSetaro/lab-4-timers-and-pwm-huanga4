@@ -34,7 +34,7 @@ Example:
 ```
 
 ##How it works
-When the timer reaches a specified value, an interupt will occure. The behavior of an LED that it is connected to is toggled and set based on the 
+When the timer reaches a specified value, an interupt will occur. A LED is toggled and set based on the 
 current value of the timer. This will cause the LED to be on or off for a certain amount of time allowing for a PWM effect adjusting the brightness.
 
 ##Differences between boards
