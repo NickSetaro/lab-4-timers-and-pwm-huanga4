@@ -37,8 +37,7 @@ int main(void) {
     {
         if(!(P5IN & BIT6)){
             P1OUT |= BIT1; //set P1.1
-            if(reps > 0)
-            {
+            if(reps > 0){
                 reps--;
                 double logNum  = log10(reps) * 100.0;  //Equation to create increments at correct rate for log scale.
                 int incrementNum = (100 - logNum);     //Difference between this and normal HardwarePWM
@@ -53,8 +52,9 @@ int main(void) {
                 reps = 10; //set reps
             }
         }
-        if((P5IN & BIT6))
+        if((P5IN & BIT6)){
             P1OUT &= ~BIT1; //clear 1.1
+        }
         for(j=100;j>0;j--)
         {
         __delay_cycles(1000);
